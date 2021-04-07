@@ -1,0 +1,21 @@
+name: "Upgrade Gradle"
+description: "Upgrade the used gradle wrapper to the current version"
+inputs:
+  distribution-type:
+    description: "the used distribution type for the wrapper (bin or all)"
+    required: false
+    default: "bin"
+  release-channel:
+    description: "the used release channel to load the current version from (current/release-candidate/nightly/release-nightly)"
+    required: false
+    default: "current"
+outputs:
+  gradle-version:
+    description: "the latest gradle version"
+    value: ${{ steps.upgrade-gradle.outputs.gradle-version }}
+
+runs:
+  using: composite
+  steps:
+    - run: ${{ github.action_path }}/upgrade-gradle.sh ${{ inputs.distribution-type }} ${{ inputs.release-channel }}
+      shell: bash
