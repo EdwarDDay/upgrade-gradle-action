@@ -21,6 +21,13 @@ jobs:
       - name: create test project directory
         run: mkdir test-project
 
-      - name: Test ${{ matrix.distribution-type }} ${{ matrix.release-channel }}
+      - name: Prepare ${{ matrix.distribution-type }} ${{ matrix.release-channel }}
         working-directory: test-project/
-        run: ${{ github.workspace }}/.github/scripts/test-upgrade-gradle.sh ${{ matrix.distribution-type }} ${{ matrix.release-channel }}
+        run: ${{ github.workspace }}/.github/scripts/test-upgrade-gradle.sh
+
+      - name: Test action
+        uses: EdwarDDay/upgrade-gradle-action@${{ github.sha }}
+        with:
+          distribution-type: ${{ matrix.distribution-type }}
+          release-channel: ${{ matrix.release-channel }}
+          working-directory: test-project/
