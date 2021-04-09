@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
 
       - name: create test project directory
         run: mkdir test-project
@@ -26,7 +26,7 @@ jobs:
         run: ${{ github.workspace }}/.github/scripts/test-upgrade-gradle.sh
 
       - name: Test action
-        uses: EdwarDDay/upgrade-gradle-action@${{ github.sha }}
+        uses: EdwarDDay/upgrade-gradle-action@main
         with:
           distribution-type: ${{ matrix.distribution-type }}
           release-channel: ${{ matrix.release-channel }}
