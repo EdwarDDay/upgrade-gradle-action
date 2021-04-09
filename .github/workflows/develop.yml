@@ -26,7 +26,7 @@ jobs:
         run: ${{ github.workspace }}/.github/scripts/test-upgrade-gradle.sh
 
       - name: Test action
-        uses: .
+        uses: ./
         with:
           distribution-type: ${{ matrix.distribution-type }}
           release-channel: ${{ matrix.release-channel }}
