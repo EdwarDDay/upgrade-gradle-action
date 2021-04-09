@@ -4,7 +4,7 @@ A GitHub action to upgrade the gradle wrapper of your project.
 
 This action will check for the newest gradle version and upgrade the gradle wrapper properties and the wrapper.
 
-##Usage
+## Usage
 
 Run this action scheduled and create a PR afterwards to review the made changes.
 
@@ -25,7 +25,7 @@ This action doesn't check the integrity of the downloaded wrapper. Please use
 [gradle/wrapper-validation-action](https://github.com/marketplace/actions/gradle-wrapper-validation) for a validation
 check.
 
-###Action Input
+### Action Input
 All inputs are optional
 
 |         Name        | Description | Possible values | Default |
@@ -33,10 +33,10 @@ All inputs are optional
 | `distribution-type` | The [distribution type](https://docs.gradle.org/current/userguide/gradle_wrapper.html#sec:adding_wrapper) used in the gradle wrapper task. | `bin`, `all`, `default` | `default` (doesn't specify the distribution type in the gradle wrapper task) |
 | `release-channel`   | The [release channel](https://services.gradle.org/versions/) used from which the latest gradle version is fetched. | `current`, `release-candidate`, `nightly`, `release-nightly`  | `current` |
 
-###Action Output
+### Action Output
 The `gradle-version` can be used in the following steps (for example in the PR).
 
-##Example
+## Example
 
 ```yaml
 name: Gradle wrapper update
