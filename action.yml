@@ -15,6 +15,12 @@ inputs:
       Default: current
     required: false
     default: "current"
+  working-directory:
+    description: >
+      The working directory must contain the `gradlew` file
+      Default: .
+    required: false
+    default: "."
 outputs:
   gradle-version:
     description: "the latest gradle version"
@@ -25,6 +31,7 @@ runs:
   steps:
     - run: ${{ github.action_path }}/upgrade-gradle.sh ${{ inputs.distribution-type }} ${{ inputs.release-channel }}
       id: upgrade-gradle
+      working-directory: ${{ inputs.working-directory }}
       shell: bash
 
 branding:
