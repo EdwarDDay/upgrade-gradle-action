@@ -16,11 +16,11 @@ jobs:
       - name: Set VCS tag
         id: variables
         run: |
-          tag-patch=${GITHUB_REF#refs/*/}
-          tag-minor=${tag-patch%.*}
-          tag-major=${tag-minor%.*}
-          echo "::set-output name=tag-minor::$tag-minor"
-          echo "::set-output name=tag-major::$tag-major"
+          tag_patch=${GITHUB_REF#refs/*/}
+          tag_minor=${tag_patch%.*}
+          tag_major=${tag_minor%.*}
+          echo "::set-output name=tag-minor::$tag_minor"
+          echo "::set-output name=tag-major::$tag_major"
 
       - name: Update major tag
         uses: richardsimko/update-tag@v1.0.5
