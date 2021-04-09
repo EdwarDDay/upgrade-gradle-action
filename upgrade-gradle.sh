@@ -4,8 +4,8 @@ set -e
 
 distributionType=$1
 # verify distribution type
-if [ "$distributionType" != "bin" ] && [ "$distributionType" != "all" ]; then
-  echo "::error::Invalid distribution type \"$distributionType\" - must be \"bin\" or \"all\""
+if [ "$distributionType" != "bin" ] && [ "$distributionType" != "all" ] && [ "$distributionType" != "default" ]; then
+  echo "::error::Invalid distribution type \"$distributionType\" - must be \"bin\", \"all\" or \"default\""
   exit 1
 fi
 
@@ -21,8 +21,12 @@ latestVersion=$(curl "https://services.gradle.org/versions/$releaseChannel" | jq
 echo "::debug::Latest gradle version: $latestVersion"
 echo "::set-output name=gradle-version::$latestVersion"
 
-# update gradle properties
-./gradlew wrapper --gradle-version "$latestVersion" --distribution-type "$distributionType"
+# update gradle wrapper properties
+if [ "$distributionType" == "default" ]; then
+  ./gradlew wrapper --gradle-version "$latestVersion"
+else
+  ./gradlew wrapper --gradle-version "$latestVersion" --distribution-type "$distributionType"
+fi
 
 # update gradle wrapper
 ./gradlew wrapper
