@@ -26,7 +26,7 @@ jobs:
         run: ${{ github.workspace }}/.github/scripts/test-upgrade-gradle.sh
 
       - name: Test action
-        uses: EdwarDDay/upgrade-gradle-action@main
+        uses: .
         with:
           distribution-type: ${{ matrix.distribution-type }}
           release-channel: ${{ matrix.release-channel }}
