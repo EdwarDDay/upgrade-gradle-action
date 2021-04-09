@@ -1,0 +1,26 @@
+name: Develop
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        distribution-type: [ "bin", "all", "default" ]
+        release-channel: [ "current", "release-candidate", "nightly", "release-nightly" ]
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: create test project directory
+        run: mkdir test-project
+
+      - name: Test ${{ matrix.distribution-type }} ${{ matrix.release-channel }}
+        working-directory: test-project/
+        run: ${{ github.workspace }}/.github/scripts/test-upgrade-gradle.sh ${{ matrix.distribution-type }} ${{ matrix.release-channel }}
