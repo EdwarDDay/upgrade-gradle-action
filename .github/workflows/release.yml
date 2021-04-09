@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2.3.4
+
+      - name: Set VCS tag
+        id: variables
+        run: |
+          tag_patch=${GITHUB_REF#refs/*/}
+          tag_minor=${tag_patch%.*}
+          tag_major=${tag_minor%.*}
+          echo "::set-output name=tag-minor::$tag_minor"
+          echo "::set-output name=tag-major::$tag_major"
+
+      - name: Update major tag
+        uses: richardsimko/update-tag@v1.0.5
+        with:
+          tag_name: ${{ steps.variables.outputs.tag-major }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update minor tag
+        uses: richardsimko/update-tag@v1.0.5
+        with:
+          tag_name: ${{ steps.variables.outputs.tag-minor }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate changelog
+        id: changelog
+        uses: metcalfc/changelog-generator@v1.0.0
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: create Github release
+        id: create_release
+        uses: actions/create-release@v1.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          draft: true
+          prerelease: false
