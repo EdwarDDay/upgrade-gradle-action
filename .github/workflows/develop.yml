@@ -26,8 +26,16 @@ jobs:
         run: ${{ github.workspace }}/.github/scripts/test-upgrade-gradle.sh
 
       - name: Test action
+        id: test
         uses: ./
         with:
           distribution-type: ${{ matrix.distribution-type }}
           release-channel: ${{ matrix.release-channel }}
           working-directory: test-project/
+
+      - name: Test output
+        run: |
+          if [ -z "${{ steps.test.outputs.gradle-version }}" ]; then
+            echo "gradle version output is empty"
+            exit -1
+          fi
