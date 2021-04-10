@@ -17,9 +17,16 @@ if [ "$releaseChannel" != 'current' ] && [ "$releaseChannel" != 'release-candida
   exit 2
 fi
 
-echo "::debug::calling: https://services.gradle.org/versions/$releaseChannel"
-versionInfo=$(curl "https://services.gradle.org/versions/$releaseChannel")
-latestVersion=$(echo "$versionInfo" | jq --raw-output '.version // ""')
+versionInfo=''
+latestVersion=''
+
+function retrieveLatestVersion() {
+  echo "::debug::calling: https://services.gradle.org/versions/$releaseChannel"
+  versionInfo=$(curl "https://services.gradle.org/versions/$releaseChannel")
+  latestVersion=$(echo "$versionInfo" | jq --raw-output '.version // ""')
+}
+
+retrieveLatestVersion
 
 while [ -z "$latestVersion" ]; do
   case "$releaseChannel" in
@@ -41,9 +48,7 @@ while [ -z "$latestVersion" ]; do
     releaseChannel='release-candidate'
     ;;
   esac
-  echo "::debug::calling: https://services.gradle.org/versions/$releaseChannel"
-  versionInfo=$(curl "https://services.gradle.org/versions/$releaseChannel")
-  latestVersion=$(echo "$versionInfo" | jq --raw-output '.version')
+  retrieveLatestVersion
 done
 
 echo "::debug::Latest gradle version: $latestVersion"
