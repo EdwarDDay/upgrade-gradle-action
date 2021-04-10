@@ -47,7 +47,7 @@ while [ -z "$latestVersion" ]; do
 done
 
 echo "::debug::Latest gradle version: $latestVersion"
-echo "::set-output name=gradle-version::$latestVersion"
+# echo "::set-output name=gradle-version::$latestVersion"
 
 # update gradle wrapper properties
 if [ "$distributionType" == "default" ]; then
