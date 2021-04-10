@@ -1,5 +1,8 @@
 # Gradle Wrapper Upgrade
 
+[![License](https://img.shields.io/github/license/EdwarDDay/serialization.kprefs?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Develop](https://github.com/EdwarDDay/upgrade-gradle-action/workflows/Develop/badge.svg?branch=main)](https://github.com/EdwarDDay/upgrade-gradle-action/actions?query=workflow%3ADevelop+branch%3Amain)
+
 A GitHub action to upgrade the gradle wrapper of your project.
 
 This action will check for the newest gradle version and upgrade the gradle wrapper properties and the wrapper.
