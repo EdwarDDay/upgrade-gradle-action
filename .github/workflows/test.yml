@@ -1,0 +1,44 @@
+name: Test
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2.3.4
+
+      - name: create test project directory
+        run: mkdir test-project
+
+      - name: Prepare test project
+        working-directory: test-project/
+        run: ${{ github.workspace }}/.github/scripts/test-upgrade-gradle.sh
+
+      - name: Test action
+        id: test
+        uses: ./
+        with:
+          working-directory: test-project/
+
+      - name: Test action
+        run: echo "${{ steps.test.outputs.fixed-issues }}"
+
+      - name: create PR
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: "Update gradle to ${{ steps.test.outputs.gradle-version }}"
+          branch: "gradle_update/version_${{ steps.test.outputs.gradle-version }}"
+          delete-branch: true
+          base: test_version_information_as_pr_body
+          draft: true
+          title: "Update gradle to ${{ steps.test.outputs.gradle-version }}"
+          body: |
+            ${{ steps.test.outputs.version-information }}
+
+            Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
+          labels: "dependencies,gradle"
+
