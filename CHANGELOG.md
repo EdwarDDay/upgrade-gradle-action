@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.2.0 *(2021-04-11)*
+---------------------------
+Add version information to output
+
 Version 1.1.1 *(2021-04-10)*
 ---------------------------
 Add fallback handling for release channel without version
