@@ -82,8 +82,6 @@ versionInformation="Upgrade to latest [gradle version $latestVersion](https://do
 # add information to fixed issues
 echo "::debug::calling https://services.gradle.org/fixed-issues/$latestVersion"
 fixedIssues=$(retrieveInformation 'fixed-issues')
-fixedIssues=$(escapeVariable "$fixedIssues")
-echo "::set-output name=fixed-issues::$fixedIssues"
 
 if [ -n "$fixedIssues" ]; then
   versionInformation="$versionInformation
@@ -93,11 +91,12 @@ $fixedIssues
 </details>"
 fi
 
+fixedIssues=$(escapeVariable "$fixedIssues")
+echo "::set-output name=fixed-issues::$fixedIssues"
+
 # add information to known issues
 echo "::debug::calling https://services.gradle.org/known-issues/$latestVersion"
 knownIssues=$(retrieveInformation 'known-issues')
-knownIssues=$(escapeVariable "$knownIssues")
-echo "::set-output name=known-issues::$knownIssues"
 
 if [ -n "$knownIssues" ]; then
   versionInformation="$versionInformation
@@ -106,6 +105,9 @@ if [ -n "$knownIssues" ]; then
 $knownIssues
 </details>"
 fi
+
+knownIssues=$(escapeVariable "$knownIssues")
+echo "::set-output name=known-issues::$knownIssues"
 
 versionInformation=$(escapeVariable "$versionInformation")
 echo "::set-output name=version-information::$versionInformation"
