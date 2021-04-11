@@ -39,5 +39,12 @@ jobs:
         run: |
           if [ -z "${{ steps.test.outputs.gradle-version }}" ]; then
             echo "gradle version output is empty"
-            exit -1
+            exit 1
+          fi
+
+      - name: Test output
+        run: |
+          if [ -z "${{ steps.test.outputs.version-information }}" ]; then
+            echo "version information output is empty"
+            exit 2
           fi
