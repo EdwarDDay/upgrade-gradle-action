@@ -63,7 +63,6 @@ fi
 
 function retrieveInformation() {
   local path="$1"
-  echo "::debug::calling https://services.gradle.org/$path/$latestVersion"
   # assume no information on service fail - probably 404
   (curl --fail "https://services.gradle.org/$path/$latestVersion" || echo '[]') | jq --raw-output '.[] | ("- [" + .key + "](" + .link + ") " + .summary )'
 }
@@ -72,31 +71,21 @@ function retrieveInformation() {
 versionInformation="Upgrade to latest [gradle version $latestVersion](https://docs.gradle.org/$latestVersion/release-notes.html)"
 
 # add information to fixed issues
+echo "::debug::calling https://services.gradle.org/fixed-issues/$latestVersion"
 fixedIssues=$(retrieveInformation 'fixed-issues')
 echo "::set-output name=fixed-issues::$fixedIssues"
 
 if [ -n "$fixedIssues" ]; then
-  versionInformation="$versionInformation
-
-<details>
-<summary>fixed issues</summary>
-$fixedIssues
-</details>
-"
+  versionInformation="$versionInformation<br /><br /><details><summary>fixed issues</summary>$fixedIssues</details>"
 fi
 
 # add information to known issues
+echo "::debug::calling https://services.gradle.org/known-issues/$latestVersion"
 knownIssues=$(retrieveInformation 'known-issues')
 echo "::set-output name=known-issues::$knownIssues"
 
 if [ -n "$knownIssues" ]; then
-  versionInformation="$versionInformation
-
-<details>
-<summary>known issues</summary>
-$knownIssues
-</details>
-"
+  versionInformation="$versionInformation<br /><br /><details><summary>known issues</summary>$knownIssues</details>"
 fi
 
 echo "::set-output name=version-information::$versionInformation"
