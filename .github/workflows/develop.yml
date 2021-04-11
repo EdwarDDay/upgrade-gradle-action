@@ -35,14 +35,14 @@ jobs:
           release-channel: ${{ matrix.release-channel }}
           working-directory: test-project/
 
-      - name: Test output
+      - name: Test gradle version output
         run: |
           if [ -z "${{ steps.test.outputs.gradle-version }}" ]; then
             echo "gradle version output is empty"
             exit 1
           fi
 
-      - name: Test output
+      - name: Test version information output
         run: |
           if [ -z "${{ steps.test.outputs.version-information }}" ]; then
             echo "version information output is empty"

@@ -64,10 +64,10 @@ fi
 # https://github.community/t/set-output-truncates-multiline-strings/16852/3
 function escapeVariable() {
   local content="$1"
-  content="${content//'%'/'%25'}"
-  content="${content//$'\n'/'%0A'}"
-  content="${content//$'\r'/'%0D'}"
-  echo content
+  local content="${content//'%'/'%25'}"
+  local content="${content//$'\n'/'%0A'}"
+  local content="${content//$'\r'/'%0D'}"
+  echo "$content"
 }
 
 function retrieveInformation() {
