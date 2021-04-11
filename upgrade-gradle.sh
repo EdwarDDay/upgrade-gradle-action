@@ -61,6 +61,15 @@ fi
 # update gradle wrapper
 ./gradlew wrapper
 
+# https://github.community/t/set-output-truncates-multiline-strings/16852/3
+function escapeVariable() {
+  local content="$1"
+  content="${content//'%'/'%25'}"
+  content="${content//$'\n'/'%0A'}"
+  content="${content//$'\r'/'%0D'}"
+  echo content
+}
+
 function retrieveInformation() {
   local path="$1"
   # assume no information on service fail - probably 404
@@ -73,19 +82,30 @@ versionInformation="Upgrade to latest [gradle version $latestVersion](https://do
 # add information to fixed issues
 echo "::debug::calling https://services.gradle.org/fixed-issues/$latestVersion"
 fixedIssues=$(retrieveInformation 'fixed-issues')
+fixedIssues=$(escapeVariable "$fixedIssues")
 echo "::set-output name=fixed-issues::$fixedIssues"
 
 if [ -n "$fixedIssues" ]; then
-  versionInformation="$versionInformation<br /><br /><details><summary>fixed issues</summary>$fixedIssues</details>"
+  versionInformation="$versionInformation
+
+<details><summary>fixed issues</summary>
+$fixedIssues
+</details>"
 fi
 
 # add information to known issues
 echo "::debug::calling https://services.gradle.org/known-issues/$latestVersion"
 knownIssues=$(retrieveInformation 'known-issues')
+knownIssues=$(escapeVariable "$knownIssues")
 echo "::set-output name=known-issues::$knownIssues"
 
 if [ -n "$knownIssues" ]; then
-  versionInformation="$versionInformation<br /><br /><details><summary>known issues</summary>$knownIssues</details>"
+  versionInformation="$versionInformation
+
+<details><summary>known issues</summary>
+$knownIssues
+</details>"
 fi
 
+versionInformation=$(escapeVariable "$versionInformation")
 echo "::set-output name=version-information::$versionInformation"
