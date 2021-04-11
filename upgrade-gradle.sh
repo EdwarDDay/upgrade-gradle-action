@@ -87,6 +87,7 @@ if [ -n "$fixedIssues" ]; then
   versionInformation="$versionInformation
 
 <details><summary>fixed issues</summary>
+
 $fixedIssues
 </details>"
 fi
@@ -102,6 +103,7 @@ if [ -n "$knownIssues" ]; then
   versionInformation="$versionInformation
 
 <details><summary>known issues</summary>
+
 $knownIssues
 </details>"
 fi
