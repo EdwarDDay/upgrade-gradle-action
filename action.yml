@@ -20,7 +20,7 @@ inputs:
       The working directory must contain the `gradlew` file
       Default: .
     required: false
-    default: "."
+    default: "./"
 outputs:
   gradle-version:
     description: "the latest gradle version"
