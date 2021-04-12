@@ -53,13 +53,11 @@ jobs:
       - name: create test project directory
         run: mkdir test-project
 
-      - name: Prepare ${{ matrix.distribution-type }} ${{ matrix.release-channel }}
+      - name: Prepare
         working-directory: test-project/
         run: ${{ github.workspace }}/.github/scripts/test-upgrade-gradle.sh
 
       - name: Test action
         uses: ./
         with:
-          distribution-type: ${{ matrix.distribution-type }}
-          release-channel: ${{ matrix.release-channel }}
           working-directory: test-project/
