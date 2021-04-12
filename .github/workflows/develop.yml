@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-root-directory:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
@@ -20,11 +20,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2.3.4
 
-      - name: create test project directory
-        run: mkdir test-project
-
       - name: Prepare ${{ matrix.distribution-type }} ${{ matrix.release-channel }}
-        working-directory: test-project/
         run: ${{ github.workspace }}/.github/scripts/test-upgrade-gradle.sh
 
       - name: Test action
@@ -33,7 +29,6 @@ jobs:
         with:
           distribution-type: ${{ matrix.distribution-type }}
           release-channel: ${{ matrix.release-channel }}
-          working-directory: test-project/
 
       - name: Test gradle version output
         run: |
@@ -48,3 +43,21 @@ jobs:
             echo "version information output is empty"
             exit 2
           fi
+
+  build-sub-directory:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2.3.4
+
+      - name: create test project directory
+        run: mkdir test-project
+
+      - name: Prepare
+        working-directory: test-project/
+        run: ${{ github.workspace }}/.github/scripts/test-upgrade-gradle.sh
+
+      - name: Test action
+        uses: ./
+        with:
+          working-directory: test-project/
