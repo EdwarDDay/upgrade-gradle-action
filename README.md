@@ -35,7 +35,7 @@ All inputs are optional
 |---------------------|-------------|-----------------|---------|
 | `distribution-type` | The [distribution type](https://docs.gradle.org/current/userguide/gradle_wrapper.html#sec:adding_wrapper) used in the gradle wrapper task. | `bin`, `all`, `default` | `default` (doesn't specify the distribution type in the gradle wrapper task) |
 | `release-channel`   | The [release channel](https://services.gradle.org/versions/) used from which the latest gradle version is fetched. | `current`, `release-candidate`, `nightly`, `release-nightly`  | `current` |
-| `working-directoy`  | The directory with the `gradlew` file. | any directory  | `.` |
+| `working-directoy`  | The directory with the `gradlew` file. | any directory  | `./` |
 
 ### Action Output
 
