@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.2.1 *(2021-04-12)*
+---------------------------
+Fix default value of working directory
+
 Version 1.2.0 *(2021-04-11)*
 ---------------------------
 Add version information to output
