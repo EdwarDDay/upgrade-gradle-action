@@ -18,7 +18,7 @@ Run this action scheduled and create a PR afterwards to review the made changes.
 
       - name: update gradle
         id: gradleUpdate
-        run: EdwarDDay/upgrade-gradle-action@v1
+        uses: EdwarDDay/upgrade-gradle-action@v1
 
      # create PR
 ```
