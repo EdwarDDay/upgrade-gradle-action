@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2021 Eduard Wolf
+#
+# SPDX-License-Identifier: Apache-2.0
+
 name: "Upgrade Gradle"
 description: "Upgrade the used gradle wrapper to the current version"
 inputs:

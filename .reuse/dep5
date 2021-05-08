@@ -1,0 +1,14 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: upgrade-gradle-action
+Upstream-Contact: Eduard Wolf <edwar_d_day@canis-tech.de>
+Source: https://github.com/EdwarDDay/upgrade-gradle-action
+
+# Sample paragraph, commented out:
+#
+# Files: src/*
+# Copyright: $YEAR $NAME <$CONTACT>
+# License: ...
+
+Files: NOTICE
+Copyright: 2021 Eduard Wolf
+License: CC0-1.0
