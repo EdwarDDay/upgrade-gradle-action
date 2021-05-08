@@ -6,7 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 
 # Gradle Wrapper Upgrade
 
-[![License](https://img.shields.io/github/license/EdwarDDay/serialization.kprefs?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
+[![REUSE status](https://api.reuse.software/badge/github.com/EdwarDDay/upgrade-gradle-action)](https://api.reuse.software/info/github.com/EdwarDDay/upgrade-gradle-action)
 [![Develop](https://github.com/EdwarDDay/upgrade-gradle-action/workflows/Develop/badge.svg?branch=main)](https://github.com/EdwarDDay/upgrade-gradle-action/actions?query=workflow%3ADevelop+branch%3Amain)
 
 A GitHub action to upgrade the gradle wrapper of your project.
