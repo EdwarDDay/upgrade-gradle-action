@@ -92,7 +92,9 @@ if [ -n "$fixedIssues" ]; then
 
 <details><summary>fixed issues</summary>
 
+<blockquote>
 $fixedIssues
+</blockquote>
 </details>"
 fi
 
@@ -108,7 +110,9 @@ if [ -n "$knownIssues" ]; then
 
 <details><summary>known issues</summary>
 
+<blockquote>
 $knownIssues
+</blockquote>
 </details>"
 fi
 
