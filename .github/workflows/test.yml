@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: 2021 Eduard Wolf
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: Test
+
+on:
+  push:
+
+jobs:
+  build-root-directory:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2.3.4
+
+      - name: Test action
+        id: gradle-update
+        uses: ./
+        with:
+          working-directory: 'test-action-message'
+
+      - name: create pull request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: "Update gradle to ${{ steps.gradle-update.outputs.gradle-version }}"
+          branch: "gradle_update/version_${{ steps.gradle-update.outputs.gradle-version }}"
+          delete-branch: true
+          title: "Update gradle to ${{ steps.gradle-update.outputs.gradle-version }}"
+          body: |
+            ${{ steps.gradleUpdate.outputs.version-information }}
+
+            Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
+          labels: "dependencies,gradle"
+
