@@ -91,8 +91,10 @@ if [ -n "$fixedIssues" ]; then
   versionInformation="$versionInformation
 
 <details><summary>fixed issues</summary>
+<blockquote>
 
 $fixedIssues
+</blockquote>
 </details>"
 fi
 
@@ -107,8 +109,10 @@ if [ -n "$knownIssues" ]; then
   versionInformation="$versionInformation
 
 <details><summary>known issues</summary>
+<blockquote>
 
 $knownIssues
+</blockquote>
 </details>"
 fi
 
