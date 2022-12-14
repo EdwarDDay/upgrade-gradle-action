@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v3.2.0
 
       - name: Prepare ${{ matrix.distribution-type }} ${{ matrix.release-channel }}
         run: ${{ github.workspace }}/.github/scripts/test-upgrade-gradle.sh
@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: checkout
-        uses: actions/checkout@v3.1.0
+        uses: actions/checkout@v3.2.0
 
       - name: REUSE compliance check
         uses: fsfe/reuse-action@v1.1
