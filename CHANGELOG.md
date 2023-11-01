@@ -7,6 +7,10 @@ SPDX-License-Identifier: Apache-2.0
 Change Log
 ==========
 
+Version 1.3.0 *(2023-11-02)*
+---------------------------
+Add ability to validate distribution checksums with the wrapper.
+
 Version 1.2.1 *(2021-04-12)*
 ---------------------------
 Fix default value of working directory

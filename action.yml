@@ -12,6 +12,14 @@ inputs:
       Default: default
     required: false
     default: "default"
+  validate-distribution-checksum:
+    description: >
+      Whether the update should retrieve distribution checksums and update the wrapper with these set, causing the
+      wrapper to validate distribution integrity on all future installs.
+      Possible values: true, false
+      Default: false
+    required: false
+    default: "false"
   release-channel:
     description: >
       The used release channel to load the current version from.
@@ -29,6 +37,9 @@ outputs:
   gradle-version:
     description: "the latest gradle version"
     value: ${{ steps.upgrade-gradle.outputs.gradle-version }}
+  gradle-distribution-sha256-sum:
+    description: "the sha256 checksum of the determined version, if distribution checksum validation enabled."
+    value: ${{ steps.upgrade-gradle.outputs.gradle-distribution-sha256-sum }}
   version-information:
     description: "the version information of the latest gradle version formatted for usage in a pull request body"
     value: ${{ steps.upgrade-gradle.outputs.version-information }}
@@ -42,7 +53,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - run: ${{ github.action_path }}/upgrade-gradle.sh ${{ inputs.distribution-type }} ${{ inputs.release-channel }}
+    - run: ${{ github.action_path }}/upgrade-gradle.sh ${{ inputs.distribution-type }} ${{ inputs.release-channel }} ${{ inputs.validate-distribution-checksum }}
       id: upgrade-gradle
       working-directory: ${{ inputs.working-directory }}
       shell: bash

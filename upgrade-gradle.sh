@@ -12,6 +12,9 @@ if [ "$distributionType" != 'bin' ] && [ "$distributionType" != 'all' ] && [ "$d
   echo "::error::Invalid distribution type \"$distributionType\" - must be \"bin\", \"all\" or \"default\""
   exit 1
 fi
+if [ "$distributionType" == "default" ]; then
+  distributionType='bin'
+fi
 
 releaseChannel="$2"
 # verify release channel
@@ -19,6 +22,12 @@ if [ "$releaseChannel" != 'current' ] && [ "$releaseChannel" != 'release-candida
   [ "$releaseChannel" != 'nightly' ] && [ "$releaseChannel" != 'release-nightly' ]; then
   echo "::error::Invalid release channel \"$releaseChannel\" - must be one of \"current\", \"release-candidate\", \"nightly\" or \"release-nightly\""
   exit 2
+fi
+
+validateDistributionChecksum="$3"
+if [ "$validateDistributionChecksum" != 'true' ] && [ "$validateDistributionChecksum" != 'false' ]; then
+  echo "::error::Invalid validate distribution checksum option \"$validateDistributionChecksum\" - must be one of \"true\" or \"false\""
+  exit 3
 fi
 
 latestVersion=''
@@ -34,7 +43,7 @@ while [ -z "$latestVersion" ]; do
   case "$releaseChannel" in
   'current')
     echo '::error::No version in release channel current'
-    exit 3
+    exit 4
     ;;
   'release-candidate')
     echo '::warn::No version in channel release-candidate, switch to current'
@@ -55,15 +64,30 @@ done
 echo "::debug::Latest gradle version: $latestVersion"
 echo "::set-output name=gradle-version::$latestVersion"
 
-# update gradle wrapper properties
-if [ "$distributionType" == "default" ]; then
-  ./gradlew wrapper --gradle-version "$latestVersion"
-else
-  ./gradlew wrapper --gradle-version "$latestVersion" --distribution-type "$distributionType"
+distributionSha256Sum=''
+checksumArg=''
+
+if [ "$validateDistributionChecksum" == "true" ]; then
+  if [ "$releaseChannel" != 'nightly' ] && [ "$releaseChannel" != 'release-nightly' ]; then
+    echo "::debug::calling: https://services.gradle.org/distributions/gradle-$latestVersion-$distributionType.zip.sha256"
+    distributionSha256Sum="$(curl -L "https://services.gradle.org/distributions/gradle-$latestVersion-$distributionType.zip.sha256")"
+  else
+    echo "::debug::calling: https://services.gradle.org/distributions-snapshots/gradle-$latestVersion-$distributionType.zip.sha256"
+    distributionSha256Sum="$(curl -L "https://services.gradle.org/distributions-snapshots/gradle-$latestVersion-$distributionType.zip.sha256")"
+  fi
+  echo "::debug::Gradle distribution sha256 sum: $distributionSha256Sum"
+  echo "::set-output name=gradle-distribution-sha256-sum::$distributionSha256Sum"
+
+  checksumArg="--gradle-distribution-sha256-sum=$distributionSha256Sum"
 fi
 
-# update gradle wrapper
-./gradlew wrapper
+echo "::debug::Updating wrapper properties (with existing wrapper & gradle version)"
+# shellcheck disable=SC2086
+./gradlew wrapper "--gradle-version=$latestVersion" "--distribution-type=$distributionType" $checksumArg
+
+echo "::debug::Running wrapper to download, validate distribution & update the wrapper itself (with target gradle version)"
+# shellcheck disable=SC2086
+./gradlew wrapper "--gradle-version=$latestVersion" "--distribution-type=$distributionType" $checksumArg
 
 # https://github.community/t/set-output-truncates-multiline-strings/16852/3
 function escapeVariable() {
