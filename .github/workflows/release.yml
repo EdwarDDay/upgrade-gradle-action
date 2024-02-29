@@ -23,8 +23,8 @@ jobs:
           tag_patch=${GITHUB_REF#refs/*/}
           tag_minor=${tag_patch%.*}
           tag_major=${tag_minor%.*}
-          echo "::set-output name=tag-minor::$tag_minor"
-          echo "::set-output name=tag-major::$tag_major"
+          echo "tag-minor=$tag_minor" >> "${GITHUB_OUTPUT}"
+          echo "tag-major=$tag_major" >> "${GITHUB_OUTPUT}"
 
       - name: Update major tag
         uses: richardsimko/update-tag@v1.0.11
