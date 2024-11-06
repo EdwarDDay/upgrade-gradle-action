@@ -81,7 +81,7 @@ function outputMultilineVariable() {
 function retrieveInformation() {
   local path="$1"
   # assume no information on service fail - probably 404
-  (curl --fail "https://services.gradle.org/${path}/${latestVersion}" || echo '[]') | jq --raw-output '.[] | ("- [" + .key + "](" + .link + ") " + .summary )'
+  (curl --fail "https://services.gradle.org/${path}/${latestVersion}" || echo '[]') | jq --raw-output '.[] | ("- [" + .key + "](" + (.link | sub("https://github[.]com/"; "https://redirect.github.com/")) + ") " + .summary )'
 }
 
 # add information to release notes page
