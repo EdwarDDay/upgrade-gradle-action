@@ -7,7 +7,11 @@ SPDX-License-Identifier: Apache-2.0
 Change Log
 ==========
 
-Version 1.3.0 *(2023-02-29)*
+Version 1.4.0 *(2024-11-06)*
+---------------------------
+Use `redirect.github` links to reduce gradle issue link spamming
+
+Version 1.3.0 *(2024-02-29)*
 ---------------------------
 Use new GitHub output mechanism
 
