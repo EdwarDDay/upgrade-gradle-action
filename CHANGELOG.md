@@ -7,6 +7,10 @@ SPDX-License-Identifier: Apache-2.0
 Change Log
 ==========
 
+Version 1.5.0 *(2024-11-07)*
+---------------------------
+Add sha 256 sum feature
+
 Version 1.4.0 *(2024-11-06)*
 ---------------------------
 Use `redirect.github` links to reduce gradle issue link spamming
