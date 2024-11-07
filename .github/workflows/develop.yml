@@ -39,6 +39,9 @@ jobs:
           release-channel: ${{ matrix.release-channel }}
           add-sha-256-sum: ${{ matrix.sha-256-sum }}
 
+      - name: Log output
+        run: echo ${{ toJSON(steps.test.outputs) }}
+
       - name: Test gradle version output
         if: ${{ !steps.test.outputs.gradle-version }}
         run: |
