@@ -67,7 +67,7 @@ done
 echo "::debug::Latest gradle version: ${latestVersion}"
 echo "gradle-version=${latestVersion}" >> "${GITHUB_OUTPUT}"
 
-sha256sum=''
+sha256sum='""'
 
 # update gradle wrapper properties
 if [ "${distributionType}" == "default" ]; then
