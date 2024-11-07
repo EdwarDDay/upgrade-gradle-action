@@ -21,6 +21,18 @@ if [ "${releaseChannel}" != 'current' ] && [ "${releaseChannel}" != 'release-can
   exit 2
 fi
 
+addShaChecksum="$3"
+# verify sha checksum input
+if [ "${addShaChecksum}" != 'true' ] && [ "${addShaChecksum}" != 'false' ]; then
+  echo "::error::Invalid add sha checksum value \"${addShaChecksum}\" - must be one of \"true\" or \"false\""
+  exit 3
+fi
+
+if [ "${addShaChecksum}" == 'true' ] && [ "${distributionType}" == 'default' ]; then
+  echo "::error::Cannot add sha checksum without setting the distribution type"
+  exit 4
+fi
+
 latestVersion=''
 
 function retrieveLatestVersion() {
@@ -34,7 +46,7 @@ while [ -z "${latestVersion}" ]; do
   case "${releaseChannel}" in
   'current')
     echo '::error::No version in release channel current'
-    exit 3
+    exit 5
     ;;
   'release-candidate')
     echo '::warn::No version in channel release-candidate, switch to current'
@@ -55,15 +67,31 @@ done
 echo "::debug::Latest gradle version: ${latestVersion}"
 echo "gradle-version=${latestVersion}" >> "${GITHUB_OUTPUT}"
 
+sha256sum=''
+
 # update gradle wrapper properties
 if [ "${distributionType}" == "default" ]; then
   ./gradlew wrapper --gradle-version "${latestVersion}"
+  # update gradle wrapper
+  ./gradlew wrapper
+elif [ "${addShaChecksum}" == 'true' ]; then
+  distributionPath='distributions'
+  if [[ "$releaseChannel" =~ nightly$ ]]; then
+      distributionPath='distributions-snapshots'
+  fi
+  echo "::debug::calling: https://services.gradle.org/${distributionPath}/gradle-${latestVersion}-${distributionType}.zip.sha256"
+  sha256sum=$(curl --location "https://services.gradle.org/${distributionPath}/gradle-${latestVersion}-${distributionType}.zip.sha256")
+  echo "::debug::sha-256-sum: $sha256sum"
+  ./gradlew wrapper --gradle-version "${latestVersion}" --distribution-type "${distributionType}" --gradle-distribution-sha256-sum  "$sha256sum"
+  # update gradle wrapper
+  ./gradlew wrapper --distribution-type "${distributionType}"
 else
   ./gradlew wrapper --gradle-version "${latestVersion}" --distribution-type "${distributionType}"
+  # update gradle wrapper
+  ./gradlew wrapper --distribution-type "${distributionType}"
 fi
 
-# update gradle wrapper
-./gradlew wrapper
+echo "sha-256-sum=${sha256sum}" >> "${GITHUB_OUTPUT}"
 
 # https://github.com/orgs/community/discussions/26288#discussioncomment-3876281
 function outputMultilineVariable() {

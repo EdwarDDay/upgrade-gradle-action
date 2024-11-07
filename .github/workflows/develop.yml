@@ -14,17 +14,21 @@ on:
 
 jobs:
   build-root-directory:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         distribution-type: [ "bin", "all", "default" ]
         release-channel: [ "current", "release-candidate", "nightly", "release-nightly" ]
+        sha-256-sum: [ "true", "false" ]
+        exclude:
+          - distribution: "default"
+            sha-256-sum: "true"
 
     steps:
       - name: checkout
         uses: actions/checkout@v4.2.2
 
-      - name: Prepare ${{ matrix.distribution-type }} ${{ matrix.release-channel }}
+      - name: Prepare gradle workspace
         run: ${{ github.workspace }}/.github/scripts/test-upgrade-gradle.sh
 
       - name: Test action
@@ -33,23 +37,62 @@ jobs:
         with:
           distribution-type: ${{ matrix.distribution-type }}
           release-channel: ${{ matrix.release-channel }}
+          add-sha-256-sum: ${{ matrix.sha-256-sum }}
 
       - name: Test gradle version output
+        if: ! steps.test.outputs.gradle-version
         run: |
-          if [ -z "${{ steps.test.outputs.gradle-version }}" ]; then
-            echo "gradle version output is empty"
-            exit 1
-          fi
+          echo "gradle version output is empty"
+          exit 1
 
       - name: Test version information output
+        if: ! steps.test.outputs.version-information
         run: |
-          if [ -z "${{ steps.test.outputs.version-information }}" ]; then
-            echo "version information output is empty"
-            exit 2
+          echo "version information output is empty"
+          exit 2
+
+      - name: Test fixed issues output
+        if: ! steps.test.outputs.fixed-issues
+        run: |
+          echo "fixed issues output is empty"
+          exit 3
+
+      - name: Test known issues output
+        if: ! steps.test.outputs.known-issues
+        run: |
+          echo "known issues output is empty"
+          exit 4
+
+      - name: Test sha sum feature in gradle file
+        if: matrix.sha-256-sum == 'true'
+        run: |
+          if [ -z $(cat gradle/wrapper/gradle-wrapper.properties | grep distributionSha256Sum) ]; then 
+            echo "no distributionSha256Sum found in gradle-wrapper.properties file"
+            exit 5
+          fi
+
+      - name: Test sha sum feature output
+        if: matrix.sha-256-sum == 'true' && ! steps.test.outputs.sha-256-sum
+        run: |
+          echo "no sha sum emitted in output"
+          exit 6
+
+      - name: Test no sha sum feature output
+        if: matrix.sha-256-sum == 'false' && steps.test.outputs.sha-256-sum
+        run: |
+          echo "sha sum emitted in output although feature set to 'false'"
+          exit 7
+
+      - name: Test distribution type
+        if: matrix.distribution-type != 'default'
+        run: |
+          if [ -z $(cat gradle/wrapper/gradle-wrapper.properties | grep distributionUrl | grep ${{ matrix.distribution-type }}.zip) ]; then 
+            echo "couldn't find correct distribution-type in gradle-wrapper.properties file"
+            exit 8
           fi
 
   build-sub-directory:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: checkout
         uses: actions/checkout@v4.2.2
