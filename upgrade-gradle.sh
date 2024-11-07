@@ -91,8 +91,6 @@ else
   ./gradlew wrapper --distribution-type "${distributionType}"
 fi
 
-echo "sha-256-sum=${sha256sum}" >> "${GITHUB_OUTPUT}"
-
 # https://github.com/orgs/community/discussions/26288#discussioncomment-3876281
 function outputMultilineVariable() {
   local name="$1"
@@ -105,6 +103,8 @@ function outputMultilineVariable() {
     echo "${delimiter}"
   } >> "${GITHUB_OUTPUT}"
 }
+
+outputMultilineVariable "sha-256-sum" "${sha256sum}"
 
 function retrieveInformation() {
   local path="$1"
