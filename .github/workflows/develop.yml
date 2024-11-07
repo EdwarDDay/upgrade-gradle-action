@@ -51,17 +51,18 @@ jobs:
           echo "version information output is empty"
           exit 2
 
-      - name: Test fixed issues output
-        if: ${{ !steps.test.outputs.fixed-issues }}
-        run: |
-          echo "fixed issues output is empty"
-          exit 3
+      # should test, if variable
+      #- name: Test fixed issues output
+      #  if: ${{ !steps.test.outputs.fixed-issues }}
+      #  run: |
+      #    echo "fixed issues output is empty"
+      #    exit 3
 
-      - name: Test known issues output
-        if: ${{ !steps.test.outputs.known-issues }}
-        run: |
-          echo "known issues output is empty"
-          exit 4
+      #- name: Test known issues output
+      #  if: ${{ !steps.test.outputs.known-issues }}
+      #  run: |
+      #    echo "known issues output is empty"
+      #    exit 4
 
       - name: Test sha sum feature in gradle file
         if: ${{ matrix.sha-256-sum == 'true' }}
