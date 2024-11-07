@@ -40,7 +40,7 @@ jobs:
           add-sha-256-sum: ${{ matrix.sha-256-sum }}
 
       - name: Log output
-        run: echo ${{ toJSON(steps.test.outputs) }}
+        run: echo '${{ toJSON(steps.test.outputs) }}'
 
       - name: Test gradle version output
         if: ${{ !steps.test.outputs.gradle-version }}
