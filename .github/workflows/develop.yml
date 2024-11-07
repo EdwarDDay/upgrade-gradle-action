@@ -40,31 +40,31 @@ jobs:
           add-sha-256-sum: ${{ matrix.sha-256-sum }}
 
       - name: Test gradle version output
-        if: ! steps.test.outputs.gradle-version
+        if: ${{ !steps.test.outputs.gradle-version }}
         run: |
           echo "gradle version output is empty"
           exit 1
 
       - name: Test version information output
-        if: ! steps.test.outputs.version-information
+        if: ${{ !steps.test.outputs.version-information }}
         run: |
           echo "version information output is empty"
           exit 2
 
       - name: Test fixed issues output
-        if: ! steps.test.outputs.fixed-issues
+        if: ${{ !steps.test.outputs.fixed-issues }}
         run: |
           echo "fixed issues output is empty"
           exit 3
 
       - name: Test known issues output
-        if: ! steps.test.outputs.known-issues
+        if: ${{ !steps.test.outputs.known-issues }}
         run: |
           echo "known issues output is empty"
           exit 4
 
       - name: Test sha sum feature in gradle file
-        if: matrix.sha-256-sum == 'true'
+        if: ${{ matrix.sha-256-sum == 'true' }}
         run: |
           if [ -z $(cat gradle/wrapper/gradle-wrapper.properties | grep distributionSha256Sum) ]; then 
             echo "no distributionSha256Sum found in gradle-wrapper.properties file"
@@ -72,19 +72,19 @@ jobs:
           fi
 
       - name: Test sha sum feature output
-        if: matrix.sha-256-sum == 'true' && ! steps.test.outputs.sha-256-sum
+        if: ${{ matrix.sha-256-sum == 'true' && !steps.test.outputs.sha-256-sum }}
         run: |
           echo "no sha sum emitted in output"
           exit 6
 
       - name: Test no sha sum feature output
-        if: matrix.sha-256-sum == 'false' && steps.test.outputs.sha-256-sum
+        if: ${{ matrix.sha-256-sum == 'false' && steps.test.outputs.sha-256-sum }}
         run: |
           echo "sha sum emitted in output although feature set to 'false'"
           exit 7
 
       - name: Test distribution type
-        if: matrix.distribution-type != 'default'
+        if: ${{ matrix.distribution-type != 'default' }}
         run: |
           if [ -z $(cat gradle/wrapper/gradle-wrapper.properties | grep distributionUrl | grep ${{ matrix.distribution-type }}.zip) ]; then 
             echo "couldn't find correct distribution-type in gradle-wrapper.properties file"
