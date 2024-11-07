@@ -8,4 +8,6 @@ set -e
 
 gradle init --overwrite --type basic --dsl kotlin --project-name test-project
 
-./gradlew wrapper --gradle-version 6.0
+rm gradle/libs.versions.toml
+
+./gradlew wrapper --gradle-version 7.0

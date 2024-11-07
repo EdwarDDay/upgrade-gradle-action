@@ -19,6 +19,13 @@ inputs:
       Default: current
     required: false
     default: "current"
+  add-sha-256-sum:
+    description: >
+      Whether to add the distribution checksum or not. This requires the distribution-type to be set to "bin" or "all".
+      Possible values: true, false
+      Default: false
+    required: false
+    default: "false"
   working-directory:
     description: >
       The working directory must contain the `gradlew` file
@@ -29,6 +36,9 @@ outputs:
   gradle-version:
     description: "the latest gradle version"
     value: ${{ steps.upgrade-gradle.outputs.gradle-version }}
+  sha-256-sum:
+    description: "the sha 256 sum of the distribution - only emitted, if add-sha-256-sum is set to 'true'"
+    value: ${{ steps.upgrade-gradle.outputs.sha-256-sum }}
   version-information:
     description: "the version information of the latest gradle version formatted for usage in a pull request body"
     value: ${{ steps.upgrade-gradle.outputs.version-information }}
@@ -42,7 +52,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - run: ${{ github.action_path }}/upgrade-gradle.sh ${{ inputs.distribution-type }} ${{ inputs.release-channel }}
+    - run: ${{ github.action_path }}/upgrade-gradle.sh "${{ inputs.distribution-type }}" "${{ inputs.release-channel }}" "${{ inputs.add-sha-256-sum }}"
       id: upgrade-gradle
       working-directory: ${{ inputs.working-directory }}
       shell: bash
