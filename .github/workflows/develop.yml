@@ -21,7 +21,7 @@ jobs:
         release-channel: [ "current", "release-candidate", "nightly", "release-nightly" ]
         sha-256-sum: [ "true", "false" ]
         exclude:
-          - distribution: "default"
+          - distribution-type: "default"
             sha-256-sum: "true"
 
     steps:
