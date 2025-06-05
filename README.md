@@ -93,3 +93,11 @@ jobs:
             Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
           labels: "dependencies,gradle"
 ```
+
+## 🔐 Grant Github Actions Permissions
+To allow the Action create branches + pull requests you need to grant permissions within repository settings:
+* Go to **Settings**
+* Go to **Actions** → **General**.
+* Under **Workflow permissions** section.
+  * Check **Read and write permissions**
+  * Check **Allow GitHub Actions to create and approve pull requests**
