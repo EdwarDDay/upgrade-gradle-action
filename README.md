@@ -95,7 +95,7 @@ jobs:
 ```
 
 ## 🔐 Grant Github Actions Permissions
-To allow the Action create branches + pull requests you need to grant permissions within repository settings:
+To allow the action create branches + pull requests you need to grant it permissions within repository settings:
 * Go to **Settings**
 * Go to **Actions** → **General**.
 * Under **Workflow permissions** section.
