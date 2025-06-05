@@ -63,6 +63,10 @@ on:
   schedule:
     - cron: '0 6 * * *'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   update:
     runs-on: ubuntu-24.04
