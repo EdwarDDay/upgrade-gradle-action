@@ -63,6 +63,11 @@ on:
   schedule:
     - cron: '0 6 * * *'
 
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
 jobs:
   update:
     runs-on: ubuntu-24.04
@@ -88,3 +93,6 @@ jobs:
             Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
           labels: "dependencies,gradle"
 ```
+
+## Grant Github Actions Permissions
+To allow the action create branches + pull requests you need to grant it permissions within repository. Please check the README of your PR creation action like [peter-evans/create-pull-request](https://github.com/peter-evans/create-pull-request/blob/main/README.md) on how to do so.
