@@ -27,14 +27,14 @@ jobs:
           echo "tag-major=$tag_major" >> "${GITHUB_OUTPUT}"
 
       - name: Update major tag
-        uses: richardsimko/update-tag@v1.0.11
+        uses: richardsimko/update-tag@v1.1.6
         with:
           tag_name: ${{ steps.variables.outputs.tag-major }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update minor tag
-        uses: richardsimko/update-tag@v1.0.11
+        uses: richardsimko/update-tag@v1.1.6
         with:
           tag_name: ${{ steps.variables.outputs.tag-minor }}
         env:
